@@ -1,0 +1,51 @@
+download kafka https://kafka.apache.org/downloads
+
+1. create a folder with random name (learn_kafka)
+2. extract the downloaded zip file to "learn_kafka" folder
+3. create "kafka_logs" folder within "learn_kafka"
+4. create 2 folder: "zookeeper" and "server_logs" within new folder "kafka_logs"
+the end result will be like this:
+learn_kafka
+-- kafka_v1_blablabla (extracted zip file)
+-- kafka_logs
+   -- zookeeper
+   -- server_logs
+
+# setup zookeeper.properties (open extracted zip file, open config folder, open zookeeper)
+--------------------------------------
+change this (actually u can change based on your needs)
+> dataDir=... (the file path of the zookeeper folder you created before) default=/tmp/kafka-logs
+> maxClientCnxns=1
+
+
+# setup server.properties (open extracted zip file, open config folder, open server)
+change this (actually u can change based on your needs)
+> uncomment listener -> listeners=PLAINTEXT://:9092
+> log.dirs=... (the file path of the server_logs created befiore) default is /tmp/kafka_logs
+> zookeeper.connect=localhost:2181
+> zookeeper.connection.timeout.ms=60000
+
+Start Zookeeper:
+--------------------------------
+[(file_path)/zookeeper-server-start.bat] file_path/zookeeper.properties
+i use base path = D:/TA/learn_kafka/kafka/
+.\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
+
+Start Kafka-server:
+---------------------------------
+[file_path/kafka-server-start.bat] file_path/server.properties
+.\bin\windows\kafka-server-start.bat .\config\server.properties
+
+Create Topic: (you can create topic by initiaing object of KafkaProducer/Kafka Client)
+.\bin\windows\kafka-topics.bat --create --topic hello_world --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1
+
+Start Producer: 
+.\bin\windows\kafka-console-producer.bat --topic hello_world --bootstrap-server localhost:9092
+
+Start Consumer:
+.\bin\windows\kafka-console-consumer.bat --topic hello_world --from-beginning --bootstrap-server localhost:9092
+
+
+
+
+
